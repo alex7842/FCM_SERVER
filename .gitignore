@@ -1,0 +1,9 @@
+Set-Content -Path .gitignore -Value "node_modules/
+.env
+serviceAccountKey.json
+logs
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+.DS_Store"

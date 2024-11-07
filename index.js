@@ -2,8 +2,13 @@ const express = require('express');
 const admin = require('firebase-admin');
 const cors = require('cors');
 require('dotenv').config();
-const serviceAccount = require('./ServiceAccountKey.json');
 
+const firebaseConfig = {
+  type: "service_account",
+  project_id: process.env.FIREBASE_PROJECT_ID,
+  private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  client_email: process.env.FIREBASE_CLIENT_EMAIL
+};
 
 const app = express();
 
@@ -13,8 +18,8 @@ app.use(express.json());
 
 // Initialize Firebase Admin
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
+  credential: admin.credential.cert(firebaseConfig)
+});
 // Notification endpoint
 app.post('/api/notifications', async (req, res) => {
   try {
