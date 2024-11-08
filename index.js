@@ -23,13 +23,19 @@ admin.initializeApp({
 // Notification endpoint
 app.post('/api/notifications', async (req, res) => {
   try {
-    const { token, title, message } = req.body;
+    const { token, title, message,senderId,senderName,senderPhoto } = req.body;
     console.log("recived token",token);
     const messagePayload = {
       token: token,
       notification: {
         title: title,
         body: message
+      },
+      data: {
+        senderId: senderId,
+        senderName: senderName,
+        senderPhoto: senderPhoto
+        
       },
       webpush: {
         fcmOptions: {
@@ -38,7 +44,9 @@ app.post('/api/notifications', async (req, res) => {
       }
     };
 
+   console.log("messagePayload",messagePayload);
     const response = await admin.messaging().send(messagePayload);
+    console.log('Successfully sent message:', response);
     res.json({ success: true, messageId: response });
   } catch (error) {
     console.error('Error sending notification:', error);
